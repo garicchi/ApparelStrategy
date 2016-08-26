@@ -73,7 +73,6 @@ public class WebsocketMessenger
 		            fs.close();
 		            String encoded = Base64.getEncoder().encodeToString(buf);
 		String sendJson = "{ \"type\":\"picture\" , \"data\":\""+encoded+"\" }";
-		System.out.println(sendJson);
 		            this.session.getBasicRemote().sendText(sendJson);
 
 		} catch (IOException e) {
