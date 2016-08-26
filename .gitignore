@@ -6,7 +6,7 @@ __pycache__/
 *$py.class
 
 #add
-./server/dialogue_system/backend/apis/key.txt
+key.txt
 
 # C extensions
 *.so
