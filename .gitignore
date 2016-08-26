@@ -6,7 +6,7 @@ __pycache__/
 *$py.class
 
 #add
-key
+key.txt
 
 # C extensions
 *.so
