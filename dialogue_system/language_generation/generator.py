@@ -9,6 +9,8 @@ class LanguageGenerator(object):
 
     def generate_sentence(self, dialogue_act):
         sent = ''
+        sent += dialogue_act['utt']
+        """
         if 'LOCATION' in dialogue_act:
             sent += '場所は{0}ですね。'.format(dialogue_act['LOCATION'])
         if 'GENRE' in dialogue_act:
@@ -35,8 +37,10 @@ class LanguageGenerator(object):
                 sent += url.format(lat, lng)
             else:
                 sent += '申し訳ありません。条件に一致するお店が見つかりませんでした。'
+
         else:
             print('Error')
             sys.exit(-1)
+        """
 
         return sent

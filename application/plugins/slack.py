@@ -23,4 +23,3 @@ def food(message, something):
     reply_message = bot.reply(text)
     save_bot(bot, user_id)
     message.reply(reply_message)
-
