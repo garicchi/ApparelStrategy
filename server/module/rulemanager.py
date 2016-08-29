@@ -75,11 +75,17 @@ class RuleManager:
             rule_obj = Rule(self.__parse_express(rule),self.__parse_express(action))
             self.rule_list.append(rule_obj)
 
-    def input_utterance(self,utterance):
+    def input_utterance(self,utterance,callback):
+        """
+        ユーザー発話入力
+        :param utterance:ユーザー発話
+        :param callback:変数が変化したときのコールバック関数。triggerオブジェクトと変数辞書が渡される
+        :return:システム発話
+        """
         change = Trigger('u_u','=',utterance)
         system_utterance = ''
         self.variables[change.variable] = change.value
-        self.__trigger(change)
+        self.variables = callback(change,self.variables)
         for j,raw in enumerate(self.rule_list):
             is_all_match = True
             for k,trigger in enumerate(raw.rules):
@@ -100,18 +106,25 @@ class RuleManager:
                         for var in self.variables.keys():
                             action.value = action.value.replace('{'+var+'}',self.variables[var])
                         system_utterance = action.value
-                    self.__trigger(action)
+                    self.variables = callback(action,self.variables)
         return system_utterance
 
 
+def trigger(change,variables):
+    """
+    rulemanager.input_utterance内でコールされる変数のトリガー
+    変数辞書を必ず返さなければいけない
+    :param change:変化があった変数のtriggerオブジェクト
+    :param variables:変数辞書
+    :return:新しい変数辞書
+    """
+    print('trigger {0} = {1}'.format(change.variable, change.value))
 
-    def __trigger(self,change_rule):
-        print('trigger {0} = {1}'.format(change_rule.variable,change_rule.value))
-        """
-        if change_rule.variable == 'u_a' and change_rule.value == 'hello':
-            self.variables['s_a'] = 'say-hello'
-        """
+    return variables
+
 if __name__ == '__main__':
     manager = RuleManager(os.path.join(os.path.dirname(__file__),'../../rule.csv'))
     manager.load()
-    manager.input_utterance('こんにちは')
+    system = manager.input_utterance('こんにちは',trigger)
+
+    print(system)
