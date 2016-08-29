@@ -3,7 +3,6 @@ from dialogue_system.dialogue_management.manager import DialogueManager
 from dialogue_system.language_generation.generator import LanguageGenerator
 from dialogue_system.language_understanding.language_understanding import RuleBasedLanguageUnderstanding
 
-
 class Bot(object):
 
     def __init__(self):
