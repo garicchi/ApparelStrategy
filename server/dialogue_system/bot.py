@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-from server.dialogue_system.dialogue_management.manager import DialogueManager
-from server.dialogue_system.language_generation.generator import LanguageGenerator
-from server.dialogue_system.language_understanding.language_understanding import RuleBasedLanguageUnderstanding
-from server.dialogue_system.module.rulemanager import RuleManager
+from dialogue_system.dialogue_management.manager import DialogueManager
+from dialogue_system.language_generation.generator import LanguageGenerator
+from dialogue_system.language_understanding.language_understanding import RuleBasedLanguageUnderstanding
+from dialogue_system.module.rulemanager import RuleManager
 import os
 
 class Bot(object):
@@ -13,7 +13,7 @@ class Bot(object):
         self.language_understanding = RuleBasedLanguageUnderstanding()
         self.manager = DialogueManager()
         """
-        rulepath = os.path.join(os.path.dirname(__file__),'../../rule.csv')
+        rulepath = os.path.join(os.path.dirname(__file__),'../rule.csv')
         self.rule_manager = RuleManager(rulepath)
         self.rule_manager.load()
 
