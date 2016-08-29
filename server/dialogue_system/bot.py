@@ -17,6 +17,24 @@ class Bot(object):
         self.rule_manager = RuleManager(rulepath)
         self.rule_manager.load()
 
+    def __trigger(self, change, variables):
+        """
+        rulemanager.input_utterance内でコールされる変数のトリガー
+        変数辞書を必ず返さなければいけない
+        :param change:変化があった変数のtriggerオブジェクト
+        :param variables:変数辞書
+        :return:新しい変数辞書
+        """
+        print('trigger {0} = {1}'.format(change.variable, change.value))
+
+        """変数を変更する場合はこう
+        if change.variable == 'u_a' and change.value == 'hello':
+            variable['s_a'] = 'say-hello'
+        """
+
+
+        return variables
+
     def reply(self, sent):
         """
         dialogue_act = self.language_understanding.execute(sent)
@@ -26,5 +44,5 @@ class Bot(object):
 
         sent = self.generator.generate_sentence(sys_act_type)
         """
-        sent = self.rule_manager.input_utterance(sent)
+        sent = self.rule_manager.input_utterance(sent,self.__trigger)
         return sent
