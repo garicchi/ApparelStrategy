@@ -65,7 +65,6 @@ class RuleManager:
 
     def load(self):
         self.rule_list = []
-        rules = []
         with open(self.rule_path, 'r') as f:
             rules = f.readlines()
         for i,line in enumerate(rules):
