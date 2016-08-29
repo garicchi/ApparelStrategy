@@ -20,7 +20,8 @@ class Bot(object):
     def __trigger(self, change, variables):
         """
         rulemanager.input_utterance内でコールされる変数のトリガー
-        変数辞書を必ず返さなければいけない
+        ここを変更することで対話ルール内にプログラムコードを介入できる
+        変数辞書variableを必ず返さなければいけない
         :param change:変化があった変数のtriggerオブジェクト
         :param variables:変数辞書
         :return:新しい変数辞書
