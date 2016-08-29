@@ -76,23 +76,26 @@ class RuleManager:
             self.rule_list.append(rule_obj)
 
     def input_utterance(self,utterance,callback):
+        self.input_variable('u_u',utterance,callback)
+
+    def input_variable(self,var,value,callback):
         """
-        ユーザー発話入力
-        :param utterance:ユーザー発話
-        :param callback:変数が変化したときのコールバック関数。triggerオブジェクトと変数辞書が渡される
-        :return:システム発話
-        """
-        change = Trigger('u_u','=',utterance)
+            ユーザー発話入力
+            :param utterance:ユーザー発話
+            :param callback:変数が変化したときのコールバック関数。triggerオブジェクトと変数辞書が渡される
+            :return:システム発話
+            """
+        change = Trigger(var, '=', value)
         system_utterance = ''
         self.variables[change.variable] = change.value
-        self.variables = callback(change,self.variables)
-        for j,raw in enumerate(self.rule_list):
+        self.variables = callback(change, self.variables)
+        for j, raw in enumerate(self.rule_list):
             is_all_match = True
-            for k,trigger in enumerate(raw.rules):
+            for k, trigger in enumerate(raw.rules):
                 if not (trigger.variable in self.variables):
                     self.variables[trigger.variable] = ''
                 val = self.variables[trigger.variable]
-                is_match = re.match(trigger.value,val)
+                is_match = re.match(trigger.value, val)
                 if trigger.expression == '=':
                     if not is_match:
                         is_all_match = False
@@ -100,15 +103,14 @@ class RuleManager:
                     if is_match:
                         is_all_match = False
             if is_all_match:
-                for l,action in enumerate(raw.actions):
+                for l, action in enumerate(raw.actions):
                     self.variables[action.variable] = action.value
                     if action.variable == 's_u':
                         for var in self.variables.keys():
-                            action.value = action.value.replace('{'+var+'}',self.variables[var])
+                            action.value = action.value.replace('{' + var + '}', self.variables[var])
                         system_utterance = action.value
-                    self.variables = callback(action,self.variables)
+                    self.variables = callback(action, self.variables)
         return system_utterance
-
 
 def trigger(change,variables):
     """
