@@ -1,0 +1,4 @@
+rule,action
+{u_u}=[こん.*],{u_a}=[hello]
+{u_a}=[hello]&{u_a}![moge],{s_a}=[say-hello]&{s_2}=[sshel]
+{s_a}=[say-hello],{s_u}=[こちらこそ、{u_a}]
