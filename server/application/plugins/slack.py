@@ -21,9 +21,11 @@ def food(message, something):
     body = message.body
     text, ts, user_id = body['text'], body['ts'], body['user']
     bot = create_or_read(user_id)
-    text_json = '{"speech":"'+text+'"}'
-    replies = bot.reply(text_json)
+    json_obj = {"type":"speech","data":text}
+    json_text = json.dumps(json_obj)
+    replies = bot.reply(json_text)
     save_bot(bot, user_id)
     for rep in replies:
-        json_obj = json.loads(rep)
-        message.reply(json_obj['data'])
+        return_split = rep.split(',')
+        message.reply(return_split[1])
+
