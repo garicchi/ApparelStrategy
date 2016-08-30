@@ -98,6 +98,7 @@ class RuleManager:
         system_utterance_list = []
         self.variables[change.variable] = change.value
         self.variables = callback(change, self.variables)
+        hit_actions = []
         for j, raw in enumerate(self.rule_list):
             is_all_match = True
             for k, trigger in enumerate(raw.rules):
@@ -112,13 +113,17 @@ class RuleManager:
                     if is_match:
                         is_all_match = False
             if is_all_match:
-                for l, action in enumerate(raw.actions):
-                    self.variables[action.variable] = action.value
-                    for var in self.variables.keys():
-                        action.value = action.value.replace('{' + var + '}', self.variables[var])
-                    if action.variable == 's_u':
-                        system_utterance_list.append(action.value)
-                    self.variables = callback(action, self.variables)
+                hit_actions.append(raw.actions)
+
+        for i,hit in enumerate(hit_actions):
+            for l, action in enumerate(hit):
+                self.variables[action.variable] = action.value
+                for var in self.variables.keys():
+                    action.value = action.value.replace('{' + var + '}', self.variables[var])
+                if action.variable == 's_u':
+                    system_utterance_list.append(action.value)
+                self.variables = callback(action, self.variables)
+
         return system_utterance_list
 
 def trigger(change,variables):
