@@ -1,0 +1,10 @@
+backports-abc==0.4
+doco==0.0.3
+PyYAML==3.11
+requests==2.11.1
+simplejson==3.8.2
+six==1.10.0
+slackbot==0.4.1
+slacker==0.9.24
+tornado==4.4.1
+websocket-client==0.37.0

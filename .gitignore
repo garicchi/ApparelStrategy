@@ -5,6 +5,10 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#add
+key.txt
+key.json
+
 # C extensions
 *.so
 
