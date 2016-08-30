@@ -72,6 +72,8 @@ class RuleManager:
         for i,line in enumerate(rules):
             if i == 0:
                 continue
+            if line.startswith('//'):
+                continue
             rule = line.split(',')[0]
             action = line.split(',')[1]
             rule_obj = Rule(self.__parse_express(rule),self.__parse_express(action))
