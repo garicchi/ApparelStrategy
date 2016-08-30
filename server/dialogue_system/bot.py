@@ -72,11 +72,18 @@ class Bot(object):
             with open(image_path, 'wb') as f:
                 f.write(file)
             qr = read_qr(image_path)
-            personal = self.data_manager.get_personal_from_id(qr)
-            print('qr is '+qr)
-            if personal is not None:
-                return_speech.append('speech,'+personal.user_pronoun+'さん、こんにちは')
-            else:
+            print('qr is ' + qr)
+            if self.rule_manager.variables['pic_mode'] == 'point':
+                personal = self.data_manager.get_personal_from_id(qr)
+                if qr != '':
+                    return_speech.append('speech,' + personal.user_pronoun + 'さん、こんにちは')
+
+            if self.rule_manager.variables['pic_mode'] == 'cloth':
+                cloth = self.data_manager.get_clothes_from_code(qr)
+                if qr != '':
+                    return_speech.append('speech,' + cloth.price+'円')
+
+            if qr == '':
                 return_speech.append('speech,読み取りに失敗しました。もう一度かざしてね')
                 return_speech.append('picture,picture')
         print("return = {0}".format(return_speech))
