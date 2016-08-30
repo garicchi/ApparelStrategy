@@ -1,9 +1,5 @@
 # -*- coding: utf-8 -*-
 
-## pip install mysqlclient
-
-import MySQLdb
-import json
 import os
 import codecs
 
@@ -65,7 +61,7 @@ class DataBaseManager:
         cloth.cloth_code = cols[6]
         return cloth
 
-    def __struct_osyaredo(self,line):
+    def __struct_evaluate(self,line):
         cols = self.__split_csvline(line)
         osyare = Evaluate()
         osyare.clothes = []
@@ -75,7 +71,7 @@ class DataBaseManager:
             else:
                 osyare.clothes.append(c)
         osyare.osyaredo = cols[3]
-
+        return osyare
 
     def read_personal(self,point_id):
 
@@ -87,11 +83,33 @@ class DataBaseManager:
 
         return None
 
+    def read_clothes(self, cloth_code):
+
+        with codecs.open(self.clothes_path, 'r', 'utf-8') as f:
+            for line in f:
+                cloth = self.__struct_cloth(line)
+                if cloth.cloth_code == cloth_code:
+                    return cloth
+
+        return None
+
+    def read_evaluate(self, cloth_code):
+        result = []
+        with codecs.open(self.evaluate_path, 'r', 'utf-8') as f:
+            for line in f:
+                ev = self.__struct_evaluate(line)
+                if ev.clothes.count(cloth_code) > 0:
+                    result.append(ev)
+        if len(result) > 0:
+            return result
+        else:
+            return None
+
 
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(__file__)
     data_path = os.path.join(script_dir,'../../data')
     manager = DataBaseManager(data_path)
-    personal = manager.read_personal('89b7306b90823849030c9314a527aa16')
-    print(personal.address)
+    personal = manager.read_evaluate('mano-a-mano_141601m')
+    print(personal[0].osyaredo)
