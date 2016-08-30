@@ -3,6 +3,7 @@
 from slackbot.bot import respond_to
 
 from dialogue_system.bot import Bot
+import json
 
 bots = {}
 
@@ -24,4 +25,5 @@ def food(message, something):
     replies = bot.reply(text_json)
     save_bot(bot, user_id)
     for rep in replies:
-        message.reply(rep)
+        json_obj = json.loads(rep)
+        message.reply(json_obj['data'])
