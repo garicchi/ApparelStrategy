@@ -29,7 +29,7 @@ class Bot(object):
         :return:新しい変数辞書
         """
         #debug mode
-        print('trigger {0} = {1}'.format(change.variable, change.value))
+        print('trigger  row:=> {0}  var:=> {1}  value:=> {2}'.format(change.row_num, change.variable, change.value))
 
         """変数を変更する場合はこう
         if change.variable == 'u_a' and change.value == 'hello':

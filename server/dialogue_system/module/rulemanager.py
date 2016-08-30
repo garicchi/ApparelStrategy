@@ -8,15 +8,18 @@ class Trigger:
     variable = ''
     expression = ''
     value = ''
+    row_num = 0
 
-    def __init__(self,variable,expression,value):
+    def __init__(self,variable,expression,value,row_num):
         self.variable = variable
         self.expression = expression
         self.value = value
+        self.row_num = row_num
 
 class Rule:
     rules = []
     actions = []
+
     def __init__(self,rules,actions):
         self.rules = rules
         self.actions = actions
@@ -31,7 +34,7 @@ class RuleManager:
     def __init__(self,rule_file):
         self.rule_path = rule_file
 
-    def __parse_rule(self,rule):
+    def __parse_rule(self,rule,row_num):
         variable = []
         is_variable = False
         value = []
@@ -53,13 +56,13 @@ class RuleManager:
             if c == '[' and not is_variable:
                 is_value = True
 
-        return Trigger(''.join(variable),expression,''.join(value))
+        return Trigger(''.join(variable),expression,''.join(value),row_num)
 
-    def __parse_express(self,express):
+    def __parse_express(self,express,row_num):
         trigger_strs = express.split('&')
         triggers = []
         for i,s in enumerate(trigger_strs):
-            trigger = self.__parse_rule(s)
+            trigger = self.__parse_rule(s,row_num)
             triggers.append(trigger)
 
         return triggers
@@ -76,7 +79,7 @@ class RuleManager:
                 continue
             rule = line.split(',')[0]
             action = line.split(',')[1]
-            rule_obj = Rule(self.__parse_express(rule),self.__parse_express(action))
+            rule_obj = Rule(self.__parse_express(rule,i),self.__parse_express(action,i))
             self.rule_list.append(rule_obj)
 
         for i,raw in enumerate(self.rule_list):
@@ -96,7 +99,7 @@ class RuleManager:
             :param callback:変数が変化したときのコールバック関数。triggerオブジェクトと変数辞書が渡される
             :return:システム発話
             """
-        change = Trigger(var, '=', value)
+        change = Trigger(var, '=', value,-1)
         system_utterance_list = []
         self.variables[change.variable] = change.value
         self.variables = callback(change, self.variables)
@@ -136,7 +139,7 @@ def trigger(change,variables):
     :param variables:変数辞書
     :return:新しい変数辞書
     """
-    print('trigger {0} = {1}'.format(change.variable, change.value))
+    print('trigger row:[{0}] var:[{1}] value:[{2}]'.format(change.row_num,change.variable, change.value))
 
     return variables
 
