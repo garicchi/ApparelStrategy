@@ -2,9 +2,10 @@
 import tornado.ioloop
 import tornado.web
 import tornado.websocket
+from tornado.options import options
+import signal
 
 from dialogue_system.bot import Bot
-
 
 class IndexHandler(tornado.web.RequestHandler):
 
@@ -38,6 +39,23 @@ application = tornado.web.Application([
     (r'/ws', MessageServer)
     ])
 
+is_closing = False
+
+def signal_handler(signum, frame):
+    global is_closing
+    print('exiting...')
+    is_closing = True
+
+def try_exit():
+    global is_closing
+    if is_closing:
+        # clean up here
+        tornado.ioloop.IOLoop.instance().stop()
+        print('exit success')
+
 if __name__ == '__main__':
+    tornado.options.parse_command_line()
+    signal.signal(signal.SIGINT, signal_handler)
     application.listen(8080)
+    tornado.ioloop.PeriodicCallback(try_exit, 100).start()
     tornado.ioloop.IOLoop.current().start()
