@@ -6,6 +6,8 @@ from dialogue_system.module.rulemanager import RuleManager
 import os
 import json
 import base64
+from dialogue_system.module.barcode import *
+from dialogue_system.module.database import DataBaseManager
 
 class Bot(object):
 
@@ -18,6 +20,10 @@ class Bot(object):
         rulepath = os.path.join(os.path.dirname(__file__),'../rule.csv')
         self.rule_manager = RuleManager(rulepath)
         self.rule_manager.load(self.__trigger)
+        data_dir = os.path.join(os.path.dirname(__file__), '../data')
+        self.data_manager = DataBaseManager(data_dir)
+
+
 
     def __trigger(self, change, variables):
         """
@@ -65,7 +71,14 @@ class Bot(object):
             file = base64.b64decode(data)
             with open(image_path, 'wb') as f:
                 f.write(file)
-
+            qr = read_qr(image_path)
+            personal = self.data_manager.get_personal_from_id(qr)
+            print('qr is '+qr)
+            if personal is not None:
+                return_speech.append('speech,'+personal.user_pronoun+'さん、こんにちは')
+            else:
+                return_speech.append('speech,読み取りに失敗しました。もう一度かざしてね')
+                return_speech.append('picture,picture')
         print("return = {0}".format(return_speech))
 
         return return_speech
