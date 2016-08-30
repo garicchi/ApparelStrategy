@@ -28,7 +28,9 @@ class MessageServer(tornado.websocket.WebSocketHandler):
         print('on message')
         print(message)
         bot = self.bots[self]
-        self.write_message(bot.reply(message))
+        replies = bot.reply(message)
+        for rep in replies:
+            self.write_message(rep)
 
     def on_close(self):
         print('on close')

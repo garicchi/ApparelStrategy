@@ -20,6 +20,7 @@ def food(message, something):
     body = message.body
     text, ts, user_id = body['text'], body['ts'], body['user']
     bot = create_or_read(user_id)
-    reply_message = bot.reply(text)
+    replies = bot.reply(text)
     save_bot(bot, user_id)
-    message.reply(reply_message)
+    for rep in replies:
+        message.reply(rep)
