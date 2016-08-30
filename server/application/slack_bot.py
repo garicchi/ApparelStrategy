@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from slackbot.bot import Bot
+from dialogue_system.bot import Bot
 
 
 def main():
