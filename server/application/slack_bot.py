@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import os,sys
+sys.path.append(os.pardir)
 from dialogue_system.bot import Bot
 
 
