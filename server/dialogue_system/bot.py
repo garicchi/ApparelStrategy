@@ -4,6 +4,8 @@ from dialogue_system.language_generation.generator import LanguageGenerator
 from dialogue_system.language_understanding.language_understanding import RuleBasedLanguageUnderstanding
 from dialogue_system.module.rulemanager import RuleManager
 import os
+import json
+import base64
 
 class Bot(object):
 
@@ -46,7 +48,15 @@ class Bot(object):
 
         sent = self.generator.generate_sentence(sys_act_type)
         """
-        #print("before sent is {0}".format(sent))
-        sent = self.rule_manager.input_utterance(sent,self.__trigger)
-        #print("after sent is {0}".format(sent))
-        return sent
+        return_speech = ''
+        messageObj = json.loads(sent)
+        type = messageObj['type']
+        data = messageObj['data']
+        if type == 'speech':
+            return_speech = self.rule_manager.input_utterance(data, self.__trigger)
+        if type == 'picture':
+            file = base64.b64decode(data)
+            with open('file.png', 'wb') as f:
+                f.write(file)
+                
+        return return_speech
