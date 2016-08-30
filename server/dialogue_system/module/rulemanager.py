@@ -95,7 +95,7 @@ class RuleManager:
             :return:システム発話
             """
         change = Trigger(var, '=', value)
-        system_utterance = ''
+        system_utterance_list = []
         self.variables[change.variable] = change.value
         self.variables = callback(change, self.variables)
         for j, raw in enumerate(self.rule_list):
@@ -117,9 +117,9 @@ class RuleManager:
                     for var in self.variables.keys():
                         action.value = action.value.replace('{' + var + '}', self.variables[var])
                     if action.variable == 's_u':
-                        system_utterance = action.value
+                        system_utterance_list.append(action.value)
                     self.variables = callback(action, self.variables)
-        return system_utterance
+        return system_utterance_list
 
 def trigger(change,variables):
     """
