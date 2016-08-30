@@ -1,4 +1,3 @@
 rule,action
-{u_u}=[こん.*],{u_a}=[hello]
-{u_a}=[hello]&{u_a}![moge],{s_a}=[say-hello]&{s_2}=[mogemoge]
-{s_a}=[say-hello],{s_u}=[こちらこそ、{u_a}]
+{u_u}=[こん.*],{s_u}=[こんにちは]
+{u_u}=[写真|しゃしん],{s_u}=[picture]

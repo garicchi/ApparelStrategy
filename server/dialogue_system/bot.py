@@ -53,10 +53,18 @@ class Bot(object):
         type = messageObj['type']
         data = messageObj['data']
         if type == 'speech':
-            return_speech = self.rule_manager.input_utterance(data, self.__trigger)
+            system_action = self.rule_manager.input_utterance(data, self.__trigger)
+            if system_action == 'picture':
+                return_speech = 'picture,picture'
+            else:
+                return_speech = 'speech,'+self.rule_manager.input_utterance(data, self.__trigger)
         if type == 'picture':
+            image_path = os.path.join(os.path.dirname(__file__), '../picture.jpg')
+            print('take picture {0}'.format(image_path))
             file = base64.b64decode(data)
-            with open('file.png', 'wb') as f:
+            with open(image_path, 'wb') as f:
                 f.write(file)
-                
+
+        print("return = {0}".format(return_speech))
+
         return return_speech
