@@ -48,16 +48,17 @@ class Bot(object):
 
         sent = self.generator.generate_sentence(sys_act_type)
         """
-        return_speech = ''
+        return_speech = []
         messageObj = json.loads(sent)
         type = messageObj['type']
         data = messageObj['data']
         if type == 'speech':
-            system_action = self.rule_manager.input_utterance(data, self.__trigger)
-            if system_action == 'picture':
-                return_speech = 'picture,picture'
-            else:
-                return_speech = 'speech,'+self.rule_manager.input_utterance(data, self.__trigger)
+            system_action_list = self.rule_manager.input_utterance(data, self.__trigger)
+            for system_action in system_action_list:
+                if system_action == 'picture':
+                    return_speech.append('picture,picture')
+                else:
+                    return_speech.append('speech,'+system_action)
         if type == 'picture':
             image_path = os.path.join(os.path.dirname(__file__), '../picture.jpg')
             print('take picture {0}'.format(image_path))
