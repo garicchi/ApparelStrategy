@@ -25,7 +25,7 @@ class Cloth:
     big_type = ''
     cloth_code = ''
 
-class Osyaredo:
+class Evaluate:
     clothes = []
     osyaredo = 0
 
@@ -37,8 +37,11 @@ class DataBaseManager:
         self.evaluate_path = os.path.join(data_dir,'evaluate.csv')
         self.personal_path = os.path.join(data_dir,'personal.csv')
 
+    def __split_csvline(self,line):
+        return line.replace('\n','').replace('"','').split(',')
+
     def __struct_personal(self,line):
-        cols = line.replace('\n','').replace('"','').split(',')
+        cols = self.__split_csvline(line)
         personal = Personal()
         personal.point_id = cols[0]
         personal.user_name = cols[1]
@@ -49,6 +52,30 @@ class DataBaseManager:
         personal.address = cols[6]
         personal.age = cols[7]
         return personal
+
+    def __struct_cloth(self,line):
+        cols = self.__split_csvline(line)
+        cloth = Cloth()
+        cloth.cloth_name = cols[0]
+        cloth.color_code = cols[1]
+        cloth.small_type = cols[2]
+        cloth.price = cols[3]
+        cloth.image_url = cols[4]
+        cloth.big_type = cols[5]
+        cloth.cloth_code = cols[6]
+        return cloth
+
+    def __struct_osyaredo(self,line):
+        cols = self.__split_csvline(line)
+        osyare = Evaluate()
+        osyare.clothes = []
+        for c in cols:
+            if c == 'null':
+                break
+            else:
+                osyare.clothes.append(c)
+        osyare.osyaredo = cols[3]
+
 
     def read_personal(self,point_id):
 
