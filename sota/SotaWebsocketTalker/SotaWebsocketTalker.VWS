@@ -3546,7 +3546,7 @@
 				</uintID>
 			</MotSend>
 			<debugPort>8765</debugPort>
-			<host>192.168.128.107</host>
+			<host>192.168.128.103</host>
 			<password>raspberry</password>
 			<platform>RaspberryPi</platform>
 			<rootPath>/home/pi/</rootPath>

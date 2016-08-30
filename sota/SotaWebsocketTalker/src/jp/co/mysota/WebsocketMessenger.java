@@ -19,6 +19,7 @@ import	javax.websocket.WebSocketContainer;
 import	java.util.Properties;
 import	java.io.*;
 import	java.util.*;
+import	jp.vstone.camera.*;
 
 public class WebsocketMessenger
 {
@@ -59,12 +60,12 @@ public class WebsocketMessenger
 	}																													//@<EndOfBlock/>
 
 	//@<Separate/>
-	public void sendFile(String path)																					//@<BlockInfo>jp.vstone.block.func,48,416,240,416,False,3,@</BlockInfo>
+	public void sendFile(String path)																					//@<BlockInfo>jp.vstone.block.func,48,416,240,416,False,4,@</BlockInfo>
 	throws SpeechRecogAbortException {
 		if(!GlobalVariable.TRUE) throw new SpeechRecogAbortException("default");
 
 																														//@<OutputChild>
-		try {																											//@<BlockInfo>jp.vstone.block.freeproc,144,416,144,416,False,15,@</BlockInfo>
+		try {																											//@<BlockInfo>jp.vstone.block.freeproc,144,416,144,416,False,3,@</BlockInfo>
 		File f=new File(path);
 		            int length=(int)f.length();
 		            byte[] buf=new byte[length];
@@ -85,25 +86,25 @@ public class WebsocketMessenger
 	}																													//@<EndOfBlock/>
 
 	//@<Separate/>
-	public WebsocketMessenger()																							//@<BlockInfo>jp.vstone.block.func.constructor,16,16,432,32,False,7,@</BlockInfo>
+	public WebsocketMessenger()																							//@<BlockInfo>jp.vstone.block.func.constructor,16,16,432,32,False,8,@</BlockInfo>
 	{
 																														//@<OutputChild>
-		URL="";																											//@<BlockInfo>jp.vstone.block.variable,80,16,80,16,False,6,break@</BlockInfo>
+		URL="";																											//@<BlockInfo>jp.vstone.block.variable,80,16,80,16,False,7,break@</BlockInfo>
 																														//@<EndOfBlock/>
-		/*RecogResult recogresult*/;																					//@<BlockInfo>jp.vstone.block.variable,160,16,160,16,False,5,break@</BlockInfo>
+		/*RecogResult recogresult*/;																					//@<BlockInfo>jp.vstone.block.variable,160,16,160,16,False,6,break@</BlockInfo>
 																														//@<EndOfBlock/>
-		session=null;																									//@<BlockInfo>jp.vstone.block.variable,272,16,272,16,False,4,break@</BlockInfo>
+		session=null;																									//@<BlockInfo>jp.vstone.block.variable,272,16,272,16,False,5,break@</BlockInfo>
 																														//@<EndOfBlock/>
 																														//@</OutputChild>
 	}																													//@<EndOfBlock/>
 
 	//@<Separate/>
-	public void sendMessage(String message)																				//@<BlockInfo>jp.vstone.block.func,48,288,240,288,False,9,@</BlockInfo>
+	public void sendMessage(String message)																				//@<BlockInfo>jp.vstone.block.func,48,288,240,288,False,10,@</BlockInfo>
 	throws SpeechRecogAbortException {
 		if(!GlobalVariable.TRUE) throw new SpeechRecogAbortException("default");
 
 																														//@<OutputChild>
-		try {																											//@<BlockInfo>jp.vstone.block.freeproc,128,288,128,288,False,8,@</BlockInfo>
+		try {																											//@<BlockInfo>jp.vstone.block.freeproc,128,288,128,288,False,9,@</BlockInfo>
 		String sendJson = "{ \"type\":\"speech\" , \"data\":\""+message+"\" }";
 		this.session.getBasicRemote().sendText(sendJson);
 
@@ -117,20 +118,52 @@ public class WebsocketMessenger
 	}																													//@<EndOfBlock/>
 
 	//@<Separate/>
-	public void onOpenSocket(Session session,EndpointConfig eptCfg)														//@<BlockInfo>jp.vstone.block.func,432,288,768,288,False,14,@</BlockInfo>
+	public void onOpenSocket(Session session,EndpointConfig eptCfg)														//@<BlockInfo>jp.vstone.block.func,352,288,992,288,False,19,@</BlockInfo>
 	throws SpeechRecogAbortException {
 		if(!GlobalVariable.TRUE) throw new SpeechRecogAbortException("default");
 
 																														//@<OutputChild>
-		GlobalVariable.sotawish.Say((String)"セッションが開いたよ",MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);	//@<BlockInfo>jp.vstone.block.talk.say,512,288,512,288,False,13,@</BlockInfo>
+		GlobalVariable.sotawish.Say((String)"セッションが開いたよ",MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);	//@<BlockInfo>jp.vstone.block.talk.say,416,288,416,288,False,18,@</BlockInfo>
 																														//@<EndOfBlock/>
-		session.addMessageHandler(new MessageHandler.Whole<String>() {													//@<BlockInfo>jp.vstone.block.freeproc,576,288,576,288,False,12,@</BlockInfo>
+		session.addMessageHandler(new MessageHandler.Whole<String>() {													//@<BlockInfo>jp.vstone.block.freeproc,480,288,480,288,False,17,@</BlockInfo>
 
 		public void onMessage(String message) {
+		System.out.println(message);
+		String[] cols = message.split(",");
+		String type = cols[0];
+		String data = cols[1];
+
+		if(type.equals("speech")){
 																														//@<EndOfBlock/>
-		GlobalVariable.sotawish.Say((String)message,MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);			//@<BlockInfo>jp.vstone.block.talk.say,640,288,640,288,False,11,@</BlockInfo>
+		GlobalVariable.sotawish.Say((String)data,MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);			//@<BlockInfo>jp.vstone.block.talk.say,544,288,544,288,False,16,@</BlockInfo>
 																														//@<EndOfBlock/>
-																														//@<BlockInfo>jp.vstone.block.freeproc,704,288,704,288,False,10,@</BlockInfo>
+		}																												//@<BlockInfo>jp.vstone.block.freeproc,608,288,608,288,False,20,@</BlockInfo>
+
+		if(type.equals("picture")){
+
+		try{
+																														//@<EndOfBlock/>
+		{																												//@<BlockInfo>jp.vstone.block.facedetect.stillpicture,672,288,672,288,False,15,still@</BlockInfo>
+			String filepath = "/var/sota/photo/";
+			filepath += (String)"picture";
+			boolean isTrakcing=GlobalVariable.robocam.isAliveFaceDetectTask();
+			if(isTrakcing) GlobalVariable.robocam.StopFaceTraking();
+			GlobalVariable.robocam.initStill(new CameraCapture(CameraCapture.CAP_IMAGE_SIZE_5Mpixel, CameraCapture.CAP_FORMAT_MJPG));
+			GlobalVariable.robocam.StillPicture(filepath);
+
+			CRobotUtil.Log("stillpicture","save picthre file to \"" + filepath +"\"");
+			if(isTrakcing) GlobalVariable.robocam.StartFaceTraking();
+		}																												//@<EndOfBlock/>
+		GlobalVariable.sotawish.Say((String)"写真とるぞい",MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);		//@<BlockInfo>jp.vstone.block.talk.say,736,288,736,288,False,14,@</BlockInfo>
+																														//@<EndOfBlock/>
+		sendFile((String)"/var/sota/photo/picture.jpg");																//@<BlockInfo>jp.vstone.block.callfunc.base,800,288,800,288,False,13,@</BlockInfo>	@<EndOfBlock/>
+		}catch(Exception e){																							//@<BlockInfo>jp.vstone.block.freeproc,864,288,864,288,False,12,@</BlockInfo>
+		e.printStackTrace();
+		}
+
+		}
+																														//@<EndOfBlock/>
+																														//@<BlockInfo>jp.vstone.block.freeproc,928,288,928,288,False,11,@</BlockInfo>
 		}
 
 		});
