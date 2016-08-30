@@ -15,7 +15,10 @@ class HotPepperGourmetAPI(object):
  #      self.__api_key = os.environ.get('HOTPEPPER_API_KEY', api_key)
 
 
-        with open("./../dialogue_system/backend/apis/key.txt", "r") as f:
+        script_dir = os.path.dirname(__file__)
+        key_path = os.path.join(script_dir, '../../../key.txt')
+
+        with open(key_path, "r") as f:
             lines = f.readlines()
 
         self.__api_key = lines[5].rstrip("\n")
