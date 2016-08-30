@@ -76,7 +76,7 @@ class RuleManager:
             self.rule_list.append(rule_obj)
 
     def input_utterance(self,utterance,callback):
-        self.input_variable('u_u',utterance,callback)
+        return self.input_variable('u_u',utterance,callback)
 
     def input_variable(self,var,value,callback):
         """

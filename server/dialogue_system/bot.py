@@ -26,6 +26,7 @@ class Bot(object):
         :param variables:変数辞書
         :return:新しい変数辞書
         """
+        #debug mode
         print('trigger {0} = {1}'.format(change.variable, change.value))
 
         """変数を変更する場合はこう
