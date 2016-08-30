@@ -73,7 +73,12 @@ class DataBaseManager:
         osyare.osyaredo = cols[3]
         return osyare
 
-    def read_personal(self,point_id):
+    def get_personal_from_id(self,point_id):
+        """
+        read personal data from point id
+        :param point_id: search point id
+        :return: personal object
+        """
 
         with codecs.open(self.personal_path,'r','utf-8') as f:
             for line in f:
@@ -83,7 +88,12 @@ class DataBaseManager:
 
         return None
 
-    def read_clothes(self, cloth_code):
+    def get_clothes_from_code(self, cloth_code):
+        """
+        read cloth data from cloth_code
+        :param cloth_code: cloth code for searching
+        :return: cloth object
+        """
 
         with codecs.open(self.clothes_path, 'r', 'utf-8') as f:
             for line in f:
@@ -93,7 +103,12 @@ class DataBaseManager:
 
         return None
 
-    def read_evaluate(self, cloth_code):
+    def get_evaluate_from_code(self, cloth_code):
+        """
+        read evaluate(osyaredo) from cloth code
+        :param cloth_code: cloth code for searching evaluate
+        :return: evaluate object list
+        """
         result = []
         with codecs.open(self.evaluate_path, 'r', 'utf-8') as f:
             for line in f:
@@ -105,11 +120,30 @@ class DataBaseManager:
         else:
             return None
 
+    def get_clothes_from_name(self, contains_name):
+        """
+        read cloth data from keyword that contains cloth name
+        :param contains_name: key contains cloth name
+        :return: cloth object list
+        """
+        result = []
+        with codecs.open(self.clothes_path, 'r', 'utf-8') as f:
+            for line in f:
+                cloth = self.__struct_cloth(line)
+                if cloth.cloth_name.count(contains_name) > 0:
+                    result.append(cloth)
+
+        if len(result) > 0:
+            return result
+        else:
+            return None
+
 
 
 if __name__ == '__main__':
     script_dir = os.path.dirname(__file__)
     data_path = os.path.join(script_dir,'../../data')
     manager = DataBaseManager(data_path)
-    personal = manager.read_evaluate('mano-a-mano_141601m')
-    print(personal[0].osyaredo)
+    personal = manager.get_clothes_from_name('ズボン')
+    for p in personal:
+        print(p.cloth_name)
