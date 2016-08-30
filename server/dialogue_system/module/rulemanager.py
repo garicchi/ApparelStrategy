@@ -2,6 +2,7 @@
 
 import os
 import re
+import codecs
 
 class Trigger:
     variable = ''
@@ -65,7 +66,7 @@ class RuleManager:
 
     def load(self):
         self.rule_list = []
-        with open(self.rule_path, 'r','utf-8') as f:
+        with codecs.open(self.rule_path, 'r','utf-8') as f:
             rules = f.readlines()
 
         for i,line in enumerate(rules):
