@@ -46,7 +46,7 @@ class Bot(object):
 
         sent = self.generator.generate_sentence(sys_act_type)
         """
-        print("before sent is {0}".format(sent))
+        #print("before sent is {0}".format(sent))
         sent = self.rule_manager.input_utterance(sent,self.__trigger)
-        print("after sent is {0}".format(sent))
+        #print("after sent is {0}".format(sent))
         return sent
