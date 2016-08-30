@@ -6,6 +6,16 @@ import MySQLdb
 import json
 import os
 
+class DataBaseManager:
+
+    def __init__(self,data_dir):
+        self.data_dir = data_dir
+        self.clothes_path = os.path.join(data_dir,'clothes.csv')
+        self.evaluate_path = os.path.join(data_dir,'evaluate.csv')
+        self.personal_path = os.path.join(data_dir,'personal.csv')
+
+
+
 if __name__ == '__main__':
     keypath = os.path.join(os.path.dirname(__file__) ,'../../key.json')
     with open(keypath,'r') as f:
