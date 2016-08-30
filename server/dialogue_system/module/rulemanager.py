@@ -64,7 +64,7 @@ class RuleManager:
 
         return triggers
 
-    def load(self):
+    def load(self,callback):
         self.rule_list = []
         with codecs.open(self.rule_path, 'r','utf-8') as f:
             rules = f.readlines()
@@ -76,6 +76,13 @@ class RuleManager:
             action = line.split(',')[1]
             rule_obj = Rule(self.__parse_express(rule),self.__parse_express(action))
             self.rule_list.append(rule_obj)
+
+        for i,raw in enumerate(self.rule_list):
+            for j, r in enumerate(raw.rules):
+                if r.variable == 'init' and r.value == '':
+                    self.input_variable(r.variable,r.value,callback)
+                    del self.rule_list[i]
+
 
     def input_utterance(self,utterance,callback):
         return self.input_variable('u_u',utterance,callback)
@@ -107,9 +114,9 @@ class RuleManager:
             if is_all_match:
                 for l, action in enumerate(raw.actions):
                     self.variables[action.variable] = action.value
+                    for var in self.variables.keys():
+                        action.value = action.value.replace('{' + var + '}', self.variables[var])
                     if action.variable == 's_u':
-                        for var in self.variables.keys():
-                            action.value = action.value.replace('{' + var + '}', self.variables[var])
                         system_utterance = action.value
                     self.variables = callback(action, self.variables)
         return system_utterance
