@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-import os,sys
-sys.path.append(os.getcwd())
-
-import dialogue_system.bot
+from slackbot.bot import Bot
 
 def main():
-    bot = dialogue_system.bot.Bot()
+    bot = Bot()
     bot.run()
  
 if __name__ == "__main__":
