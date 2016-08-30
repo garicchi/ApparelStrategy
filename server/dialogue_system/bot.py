@@ -59,7 +59,7 @@ class Bot(object):
             else:
                 return_speech = 'speech,'+self.rule_manager.input_utterance(data, self.__trigger)
         if type == 'picture':
-            image_path = os.path.join(os.path.dirname(__file__), '../picture.png')
+            image_path = os.path.join(os.path.dirname(__file__), '../picture.jpg')
             print('take picture {0}'.format(image_path))
             file = base64.b64decode(data)
             with open(image_path, 'wb') as f:
