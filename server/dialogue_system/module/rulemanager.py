@@ -114,9 +114,9 @@ class RuleManager:
             if is_all_match:
                 for l, action in enumerate(raw.actions):
                     self.variables[action.variable] = action.value
+                    for var in self.variables.keys():
+                        action.value = action.value.replace('{' + var + '}', self.variables[var])
                     if action.variable == 's_u':
-                        for var in self.variables.keys():
-                            action.value = action.value.replace('{' + var + '}', self.variables[var])
                         system_utterance = action.value
                     self.variables = callback(action, self.variables)
         return system_utterance
