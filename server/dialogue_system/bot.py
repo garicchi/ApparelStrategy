@@ -52,4 +52,5 @@ class Bot(object):
         #print("before sent is {0}".format(sent))
         sent = self.rule_manager.input_utterance(sent,self.__trigger)
         #print("after sent is {0}".format(sent))
+
         return sent
