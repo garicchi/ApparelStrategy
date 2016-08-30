@@ -64,7 +64,7 @@ class RuleManager:
 
         return triggers
 
-    def load(self):
+    def load(self,callback):
         self.rule_list = []
         with codecs.open(self.rule_path, 'r','utf-8') as f:
             rules = f.readlines()
@@ -77,6 +77,13 @@ class RuleManager:
             rule_obj = Rule(self.__parse_express(rule),self.__parse_express(action))
             self.rule_list.append(rule_obj)
 
+        for i,raw in enumerate(self.rule_list):
+            for j, r in enumerate(raw.rules):
+                if r.variable == 'init' and r.value == '':
+                    self.input_variable(r.variable,r.value,callback)
+                    del self.rule_list[i]
+
+
     def input_utterance(self,utterance,callback):
         return self.input_variable('u_u',utterance,callback)
 
@@ -88,7 +95,7 @@ class RuleManager:
             :return:システム発話
             """
         change = Trigger(var, '=', value)
-        system_utterance = ''
+        system_utterance_list = []
         self.variables[change.variable] = change.value
         self.variables = callback(change, self.variables)
         for j, raw in enumerate(self.rule_list):
@@ -107,12 +114,12 @@ class RuleManager:
             if is_all_match:
                 for l, action in enumerate(raw.actions):
                     self.variables[action.variable] = action.value
+                    for var in self.variables.keys():
+                        action.value = action.value.replace('{' + var + '}', self.variables[var])
                     if action.variable == 's_u':
-                        for var in self.variables.keys():
-                            action.value = action.value.replace('{' + var + '}', self.variables[var])
-                        system_utterance = action.value
+                        system_utterance_list.append(action.value)
                     self.variables = callback(action, self.variables)
-        return system_utterance
+        return system_utterance_list
 
 def trigger(change,variables):
     """

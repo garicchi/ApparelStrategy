@@ -17,7 +17,7 @@ class Bot(object):
         """
         rulepath = os.path.join(os.path.dirname(__file__),'../rule.csv')
         self.rule_manager = RuleManager(rulepath)
-        self.rule_manager.load()
+        self.rule_manager.load(self.__trigger)
 
     def __trigger(self, change, variables):
         """
