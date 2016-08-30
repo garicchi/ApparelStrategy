@@ -67,6 +67,8 @@ class RuleManager:
         self.rule_list = []
         with open(self.rule_path, 'r') as f:
             rules = f.readlines()
+
+        print("rule num is {0}".format(len(rules)))
         for i,line in enumerate(rules):
             if i == 0:
                 continue
