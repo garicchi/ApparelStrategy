@@ -8,6 +8,8 @@ import json
 import base64
 from dialogue_system.module.barcode import *
 from dialogue_system.module.database import DataBaseManager
+from dialogue_system.module.posttwitter import PostTwitter
+import datetime
 
 class Bot(object):
 
@@ -30,6 +32,12 @@ class Bot(object):
         # a level of osyare on current user
         self.current_osyare = None
 
+        script_dir = os.path.dirname(__file__)
+        key_path = os.path.join(script_dir, '../key.json')
+        with open(key_path) as f:
+            self.keys = json.load(f)
+
+        self.twitter = PostTwitter(self.keys['consumer-key'],self.keys['consumer-secret'],self.keys['access-token'],self.keys['access-secret'])
 
         self.__print_current_variables()
 
@@ -66,6 +74,10 @@ class Bot(object):
             self.rule_manager.variables['current_cloth'] = cloth.price
             self.rule_manager.variables['qr_data'] = 'null'
 
+            # test
+            status = cloth.cloth_name + '  '+str(datetime.datetime.today())
+            self.twitter.post_image_url(status,cloth.image_url)
+
         if change.variable == 'end_cloth':
             if len(self.current_cloth_list) == 0:
                 return variables
@@ -79,7 +91,7 @@ class Bot(object):
                 self.current_osyare = ev[0]
 
                 # オシャレ度が50以上なら{is_osyare}をtrueにする
-                if ev[0].osyaredo > 50:
+                if int(ev[0].osyaredo) > 50:
                     self.rule_manager.variables['is_osyare'] = 'true'
             else:
                 print('no match in osyaredo for '+first.cloth_code)

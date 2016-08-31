@@ -8,3 +8,5 @@ slackbot==0.4.1
 slacker==0.9.24
 tornado==4.4.1
 websocket-client==0.37.0
+twitter=1.17.1
+tweepy=3.5.0
