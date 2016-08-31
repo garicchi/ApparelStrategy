@@ -11,6 +11,7 @@ from dialogue_system.module.database import DataBaseManager
 from dialogue_system.module.posttwitter import PostTwitter
 import datetime
 from dialogue_system.module.pixelpy import Pixel
+import random
 
 class Bot(object):
 
@@ -34,6 +35,8 @@ class Bot(object):
         self.current_osyare = None
 
         self.saturation = None
+
+        self.recommend_cloth = None
 
         script_dir = os.path.dirname(__file__)
         key_path = os.path.join(script_dir, '../key.json')
@@ -78,7 +81,7 @@ class Bot(object):
             self.rule_manager.variables['qr_data'] = 'null'
 
             # test
-            status = cloth.cloth_name + '  '+str(datetime.datetime.today())
+            status = '【スキャンした服】 '+cloth.cloth_name + '  '+str(datetime.datetime.today())
             self.twitter.post_image_url(status,cloth.image_url)
 
         if change.variable == 'end_cloth':
@@ -104,6 +107,22 @@ class Bot(object):
                 print(c.cloth_name)
 
             self.rule_manager.variables['qr_data'] = 'null'
+
+        if change.variable == 'search_db':
+            key1 = self.rule_manager.variables['key1']
+            key2 = self.rule_manager.variables['key2']
+            data_list = self.data_manager.get_clothes_from_keys(key1,key2)
+
+            if data_list is not None:
+                choice = random.choice(data_list)
+                self.recommend_cloth = choice
+
+                status = '【おすすめの服】 '+choice.cloth_name+ '  '+str(datetime.datetime.today())
+                self.twitter.post_image_url(status,choice.image_url)
+
+                self.rule_manager.variables['recommend'] = choice.cloth_name
+            else:
+                self.rule_manager.variables['recommend'] = 'null'
 
 
 
