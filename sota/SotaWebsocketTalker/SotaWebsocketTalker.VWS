@@ -380,8 +380,8 @@
 		</javaPackage>
 	</package>
 	<poseAreaPropaty>
-		<DrawSize>100</DrawSize>
-		<_DrawSize>100</_DrawSize>
+		<DrawSize>50</DrawSize>
+		<_DrawSize>50</_DrawSize>
 		<drawTransp>1</drawTransp>
 		<onlyPasteSelectedPoseSlider>false</onlyPasteSelectedPoseSlider>
 		<sliders>
