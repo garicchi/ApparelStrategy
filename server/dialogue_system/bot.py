@@ -10,6 +10,7 @@ from dialogue_system.module.barcode import *
 from dialogue_system.module.database import DataBaseManager
 from dialogue_system.module.posttwitter import PostTwitter
 import datetime
+from dialogue_system.module.pixelpy import Pixel
 
 class Bot(object):
 
@@ -31,6 +32,8 @@ class Bot(object):
         self.current_cloth_list = []
         # a level of osyare on current user
         self.current_osyare = None
+
+        self.saturation = None
 
         script_dir = os.path.dirname(__file__)
         key_path = os.path.join(script_dir, '../key.json')
@@ -111,6 +114,8 @@ class Bot(object):
         for system_action in utterance_list:
             if system_action == 'picture':
                 return_speech.append('picture,picture')
+            elif system_action == 'color':
+                return_speech.append('picture2,picture2')
             elif system_action == 'hide':
                 return_speech.append('hide,hide')
             elif system_action == 'normal':
@@ -148,14 +153,9 @@ class Bot(object):
             file = base64.b64decode(data)
             with open(image_path, 'wb') as f:
                 f.write(file)
-            qr = read_qr(image_path)
+            pixel = Pixel(image_path)
+            self.saturation = pixel.get_saturation()
 
-            if qr == '':
-                qr = 'null'
-
-            # qrコードを読み取ると{qr_data}という変数に読み取り結果を入れる。nullなら読み取り失敗
-            system_action_list =self.rule_manager.input_variable('qr_data',qr, self.__trigger)
-            return_speech.extend(self.__get_speech_list(system_action_list))
 
         print('')
         for r in return_speech:

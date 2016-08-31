@@ -20,6 +20,7 @@ class Cloth:
     image_url = ''
     big_type = ''
     cloth_code = ''
+    cloth_describe = ''
 
 class Evaluate:
     clothes = []
@@ -59,6 +60,7 @@ class DataBaseManager:
         cloth.image_url = cols[4]
         cloth.big_type = cols[5]
         cloth.cloth_code = cols[6]
+        cloth.cloth_describe = cols[7]
         return cloth
 
     def __struct_evaluate(self,line):
