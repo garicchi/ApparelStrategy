@@ -7,4 +7,5 @@ Class-Path: .
  /home/vstone/lib/opencv-310.jar 
  /home/vstone/lib/sotalib.jar 
  /home/vstone/lib/SRClientHelper.jar 
+ /home/pi//lib/core-3.2.1.jar 
  /home/pi//lib/tyrus-standalone-client-1.13.jar 
