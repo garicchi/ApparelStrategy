@@ -1,6 +1,6 @@
 rule,action
 //initialize
-{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&key1=0&key2=0&{qr_data}=[null]&{s_u}=[]
+{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&{key1}=[0]&{key2}=[0]&{qr_data}=[null]&{s_u}=[]
 //start
 {u_u}=[.*試着.*]&{status}=[wait],{s_u}=[ポイントカードを見せてね]&{status}=[point_scan]&{s_u}=[picture]
 {qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
@@ -28,9 +28,3 @@ rule,action
 {u_u}=[(.*はい.*|.*いいよ.*|.*おっけー.*|.*うん.*|.*提案.*|.*お願い.*|.*して.*)]&{status}=[qa],{status}=[qz]&{s_u}=[わかったよ！店員さんを呼ぶからちょっと待っててねー！]
 {u_u}=[(.*いや.*|.*やだ.*|.*駄目.*|.*大丈夫.*|.*嫌.*|.*しないで.*)]&{status}=[qa],{status}=[{status_ren}]&{s_u}=[分かったよ！会話に戻るね！]
 {status}=[qz],{s_u}=[終わり]
-{u_u}=[こん.*],{s_u}=[こんにちは]
-{u_u}=[試着],{s_u}=[ポイントカードを見せてね]
-{u_u}=[試着],{s_u}=[picture]&{pic_mode}=[point]
-{u_u}=[服],{s_u}=[服の値札をかざしてね]&{u_u}=[服]&{s_u}=[picture]&{pic_mode}=[cloth]&{s_u}=[まだ服残ってる？]
-{u_u}=[ない],{s_u}=[ありがとう。試着室へどうぞ]
-{u_u}=[ある],{s_u}=[服の値札をかざしてね]&{u_u}=[服]&{s_u}=[picture]&{pic_mode}=[cloth]&{s_u}=[まだ服残ってる？]
