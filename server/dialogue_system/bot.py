@@ -22,8 +22,15 @@ class Bot(object):
         self.rule_manager.load(self.__trigger)
         data_dir = os.path.join(os.path.dirname(__file__), '../data')
         self.data_manager = DataBaseManager(data_dir)
+
+        # a user using system
         self.current_personal = None
+        # some cloth list scanned by sota
         self.current_cloth_list = []
+        # a level of osyare on current user
+        self.current_osyare = None
+
+
         self.__print_current_variables()
 
 
@@ -43,6 +50,9 @@ class Bot(object):
         if change.variable == 'u_a' and change.value == 'hello':
             variable['s_a'] = 'say-hello'
         """
+
+        # change.valueはアクションの言葉の変数置き換えてないバージョン
+        # change.value_alternateが変数を置き換えたバージョン
         alter_value = change.value_alternate
 
         if change.variable == 'scan_point':
@@ -51,9 +61,7 @@ class Bot(object):
             self.rule_manager.variables['qr_data']= 'null'
 
         if change.variable == 'scan_cloth':
-            print("change value = {0}".format(alter_value))
             cloth = self.data_manager.get_clothes_from_code(alter_value)
-            print('cloth code = {0}'.format(cloth.cloth_code))
             self.current_cloth_list.append(cloth)
             self.rule_manager.variables['current_cloth'] = cloth.price
             self.rule_manager.variables['qr_data'] = 'null'
@@ -61,11 +69,13 @@ class Bot(object):
         if change.variable == 'end_cloth':
             first = self.current_cloth_list[0]
             ev = self.data_manager.get_evaluate_from_code(first.cloth_code)
-            if ev != None:
+            if ev is not None:
                 self.rule_manager.variables['current_osyare'] = ev[0].osyaredo
                 print('osyaredo = {0}'.format(ev[0].osyaredo))
+                self.current_osyare = ev[0]
             else:
                 print('no match in osyaredo for '+first.cloth_code)
+                self.current_osyare = None
 
             for c in self.current_cloth_list:
                 print(c.cloth_name)
@@ -121,8 +131,8 @@ class Bot(object):
             system_action_list =self.rule_manager.input_variable('qr_data',qr, self.__trigger)
             return_speech.extend(self.__get_speech_list(system_action_list))
 
+        print('')
         for r in return_speech:
-            print('')
             print('return speech is {0}'.format(r))
 
         self.__print_current_variables()
