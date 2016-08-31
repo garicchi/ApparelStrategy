@@ -69,10 +69,15 @@ class Bot(object):
         if change.variable == 'end_cloth':
             first = self.current_cloth_list[0]
             ev = self.data_manager.get_evaluate_from_code(first.cloth_code)
+            self.rule_manager.variables['is_osyare'] = 'false'
             if ev is not None:
                 self.rule_manager.variables['current_osyare'] = ev[0].osyaredo
                 print('osyaredo = {0}'.format(ev[0].osyaredo))
                 self.current_osyare = ev[0]
+
+                # オシャレ度が50以上なら{is_osyare}をtrueにする
+                if ev[0].osyaredo > 50:
+                    self.rule_manager.variables['is_osyare'] = 'true'
             else:
                 print('no match in osyaredo for '+first.cloth_code)
                 self.current_osyare = None
@@ -81,6 +86,8 @@ class Bot(object):
                 print(c.cloth_name)
 
             self.rule_manager.variables['qr_data'] = 'null'
+
+
 
         return variables
 
