@@ -1,5 +1,8 @@
 rule,action
+{init}=[],{status}=[wait]&{qr_data}=[null]&{s_u}=[]
 {u_u}=[こん.*],{s_u}=[こんにちは]
-{u_u}=[写真],{s_u}=[写真をとるよ]
-{u_u}=[写真],{s_u}=[picture]
-{u_u}=[写真],{s_u}=[写真とったよ]
+{u_u}=[.*試着.*]&{status}=[wait],{s_u}=[ポイントカードを見せてね]&{status}=[point_scan]&{s_u}=[picture]
+{qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
+{qr_data}![null]&{status}=[cloth_scan],{scan_cloth}=[{qr_data}]&{s_u}=[{current_cloth}円だよ。まだ試着する服残ってる?]&{status}=[cloth_ask]
+{u_u}=[.*ある.*]&{status}=[cloth_ask],{s_u}=[服を見せて]&{status}=[cloth_scan]&{s_u}=[picture]
+{u_u}=[.*ない.*]&{status}=[cloth_ask],{end_cloth}=[]&{status}=[go_fit]&{s_u}=[ありがとう。試着室へどうぞ。試着が終わったら声をかけてね]

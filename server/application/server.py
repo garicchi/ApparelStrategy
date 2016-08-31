@@ -4,6 +4,7 @@ import tornado.web
 import tornado.websocket
 from tornado.options import options
 import signal
+import json
 
 from dialogue_system.bot import Bot
 
@@ -22,11 +23,15 @@ class MessageServer(tornado.websocket.WebSocketHandler):
     def open(self):
         print('on open')
         self.bots[self] = Bot()
-        self.write_message('何かしゃべってください')
 
     def on_message(self, message):
         print('on message')
         print(message)
+        jobj = json.loads(message)
+        if jobj['data'] == "":
+            print('receive empty data')
+            return
+
         bot = self.bots[self]
         replies = bot.reply(message)
         for rep in replies:

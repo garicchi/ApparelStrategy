@@ -8,6 +8,7 @@ class Trigger:
     variable = ''
     expression = ''
     value = ''
+    value_alternate = ''
     row_num = 0
 
     def __init__(self,variable,expression,value,row_num):
@@ -15,6 +16,14 @@ class Trigger:
         self.expression = expression
         self.value = value
         self.row_num = row_num
+        self.value_alternate = ''
+
+    def get_alternate_value(self,variables):
+        self.value_alternate = self.value
+        for var in variables.keys():
+            self.value_alternate = self.value_alternate.replace('{' + var + '}', variables[var])
+
+        return self.value_alternate
 
 class Rule:
     rules = []
@@ -123,10 +132,9 @@ class RuleManager:
         for i,hit in enumerate(hit_actions):
             for l, action in enumerate(hit):
                 self.variables[action.variable] = action.value
-                for var in self.variables.keys():
-                    action.value = action.value.replace('{' + var + '}', self.variables[var])
+                action.get_alternate_value(self.variables)
                 if action.variable == 's_u':
-                    system_utterance_list.append(action.value)
+                    system_utterance_list.append(action.value_alternate)
                 self.variables = callback(action, self.variables)
 
         return system_utterance_list
