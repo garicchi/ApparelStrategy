@@ -43,23 +43,33 @@ class Bot(object):
         if change.variable == 'u_a' and change.value == 'hello':
             variable['s_a'] = 'say-hello'
         """
+        alter_value = change.value_alternate
 
         if change.variable == 'scan_point':
-            self.current_personal = self.data_manager.get_personal_from_id(change.value)
+            self.current_personal = self.data_manager.get_personal_from_id(alter_value)
             self.rule_manager.variables['current_user'] = self.current_personal.user_pronoun
             self.rule_manager.variables['qr_data']= 'null'
 
         if change.variable == 'scan_cloth':
-            cloth = self.data_manager.get_clothes_from_code(change.value)
+            print("change value = {0}".format(alter_value))
+            cloth = self.data_manager.get_clothes_from_code(alter_value)
+            print('cloth code = {0}'.format(cloth.cloth_code))
             self.current_cloth_list.append(cloth)
             self.rule_manager.variables['current_cloth'] = cloth.price
             self.rule_manager.variables['qr_data'] = 'null'
 
         if change.variable == 'end_cloth':
             first = self.current_cloth_list[0]
-            ev = self.data_manager.get_evaluate_from_code(first.cloth_code)[0]
-            self.rule_manager.variables['current_osyare'] = ev.osyaredo
-            print('osyaredo = {0}'.format(ev.osyaredo))
+            ev = self.data_manager.get_evaluate_from_code(first.cloth_code)
+            if ev != None:
+                self.rule_manager.variables['current_osyare'] = ev[0].osyaredo
+                print('osyaredo = {0}'.format(ev[0].osyaredo))
+            else:
+                print('no match in osyaredo for '+first.cloth_code)
+
+            for c in self.current_cloth_list:
+                print(c.cloth_name)
+
             self.rule_manager.variables['qr_data'] = 'null'
 
         return variables
