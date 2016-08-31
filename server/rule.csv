@@ -2,7 +2,6 @@ rule,action
 //initialize
 {init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&key1=0&key2=0&{qr_data}=[null]&{s_u}=[]
 //start
-{u_u}=[こん.*],{s_u}=[こんにちは]
 {u_u}=[.*試着.*]&{status}=[wait],{s_u}=[ポイントカードを見せてね]&{status}=[point_scan]&{s_u}=[picture]
 {qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
 {qr_data}![null]&{status}=[cloth_scan],{scan_cloth}=[{qr_data}]&{s_u}=[{current_cloth}円だよ。まだ試着する服残ってる?]&{status}=[cloth_ask]
