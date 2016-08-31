@@ -6,10 +6,10 @@ rule,action
 {qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
 {qr_data}![null]&{status}=[cloth_scan],{scan_cloth}=[{qr_data}]&{s_u}=[{current_cloth}円だよ。まだ試着する服残ってる?]&{status}=[cloth_ask]
 {u_u}=[.*ある.*]&{status}=[cloth_ask],{s_u}=[服を見せて]&{status}=[cloth_scan]&{s_u}=[picture]
-{u_u}=[.*ない.*|.*無い.*|.*内容.*]&{status}=[cloth_ask],{end_cloth}=[]&{status}=[go_fit]&{s_u}=[ありがとう。試着室へどうぞ。試着が終わったら声をかけてね]
+{u_u}=[.*ない.*|.*無い.*|.*内容.*]&{status}=[cloth_ask],{end_cloth}=[]&{status}=[go_fit]&{s_u}=[hide]&{s_u}=[ありがとう。試着室へどうぞ。試着が終わったら声をかけてね]
 //go fitting room
-{status}=[q1|go_fit]&{u_u}=[.*着た.*|.*きた.*|.*終わった.*|.*おわ.*]&{is_osyare}=[false],{status}=[q2]&{s_u}=[服の提案をしてもいいかな？]
-{status}=[q1|go_fit]&{u_u}=[.*着た.*|.*きた.*|.*終わった.*|.*おわ.*]&{is_osyare}=[true],{status}=[q7]&{s_u}=[すっごくオシャレだね。何か質問ある？]
+{status}=[q1|go_fit]&{u_u}=[.*着た.*|.*きた.*|.*終わった.*|.*おわ.*]&{is_osyare}=[false],{status}=[q2]&{s_u}=[normal]&{s_u}=[服の提案をしてもいいかな？]
+{status}=[q1|go_fit]&{u_u}=[.*着た.*|.*きた.*|.*終わった.*|.*おわ.*]&{is_osyare}=[true],{status}=[q7]&{s_u}=[normal]&{s_u}=[すっごくオシャレだね。何か質問ある？]
 {u_u}=![(.*はい.*|.*いいよ.*|.*おっけー.*|.*うん.*|.*提案.*|.*お願い.*|.*して.*|.*いや.*|.*やだ.*|.*駄目.*|.*大丈夫.*|.*嫌.*|.*しないで.*)]&{status}=[q2],{s_u}=[ごめん、言葉が難しくて分からなかった！服の提案をしてもいいかな？]
 {u_u}=[(.*はい.*|.*いいよ.*|.*おっけー.*|.*うん.*|.*提案.*|.*お願い.*|.*して.*)]&{status}=[q2|q7],{status}=[q3]&{s_u}=[ありがとう！いくつか質問させてね！どういうところに来て行く為の服が欲しいの？]
 {u_u}=[(.*いや.*|.*やだ.*|.*駄目.*|.*大丈夫.*|.*嫌.*|.*しないで.*)]&{status}=[q2],{status}=[qz]&{s_u}=[分かったよ！今日は来てくれてどうもありがとう！気をつけて帰ってね]

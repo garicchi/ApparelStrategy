@@ -67,6 +67,9 @@ class Bot(object):
             self.rule_manager.variables['qr_data'] = 'null'
 
         if change.variable == 'end_cloth':
+            if len(self.current_cloth_list) == 0:
+                return variables
+
             first = self.current_cloth_list[0]
             ev = self.data_manager.get_evaluate_from_code(first.cloth_code)
             self.rule_manager.variables['is_osyare'] = 'false'
@@ -96,6 +99,10 @@ class Bot(object):
         for system_action in utterance_list:
             if system_action == 'picture':
                 return_speech.append('picture,picture')
+            elif system_action == 'hide':
+                return_speech.append('hide,hide')
+            elif system_action == 'normal':
+                return_speech.append('normal,normal')
             else:
                 return_speech.append('speech,' + system_action)
         return return_speech
