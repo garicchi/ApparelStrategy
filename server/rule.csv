@@ -1,5 +1,14 @@
 rule,action
-{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[q1]&key1=0&key2=0
+//initialize
+{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&key1=0&key2=0&{qr_data}=[null]&{s_u}=[]
+//start
+{u_u}=[こん.*],{s_u}=[こんにちは]
+{u_u}=[.*試着.*]&{status}=[wait],{s_u}=[ポイントカードを見せてね]&{status}=[point_scan]&{s_u}=[picture]
+{qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
+{qr_data}![null]&{status}=[cloth_scan],{scan_cloth}=[{qr_data}]&{s_u}=[{current_cloth}円だよ。まだ試着する服残ってる?]&{status}=[cloth_ask]
+{u_u}=[.*ある.*]&{status}=[cloth_ask],{s_u}=[服を見せて]&{status}=[cloth_scan]&{s_u}=[picture]
+{u_u}=[.*ない.*]&{status}=[cloth_ask],{end_cloth}=[]&{status}=[go_fit]&{s_u}=[ありがとう。試着室へどうぞ。試着が終わったら声をかけてね]
+//go fitting room
 {status}=[q1]&{u_u}=[.*開始.*],{status}=[q2]&{s_u}=[こんにちは！服の提案をしてもいいかな？]
 {u_u}=![(.*はい.*|.*いいよ.*|.*おっけー.*|.*うん.*|.*提案.*|.*お願い.*|.*して.*|.*いや.*|.*やだ.*|.*駄目.*|.*大丈夫.*|.*嫌.*|.*しないで.*)]&{status}=[q2],{s_u}=[ごめん、言葉が難しくて分からなかった！服の提案をしてもいいかな？]
 {u_u}=[(.*はい.*|.*いいよ.*|.*おっけー.*|.*うん.*|.*提案.*|.*お願い.*|.*して.*)]&{status}=[q2],{status}=[q3]&{s_u}=[ありがとう！いくつか質問させてね！どういうところに来て行く為の服が欲しいの？]
