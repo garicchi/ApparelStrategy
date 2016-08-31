@@ -362,7 +362,10 @@
 	</iniPoses>
 	<jarPath>
 		<jarReference>
-			<classPath>C:\Users\STC-intern-4\projects\SotaMessengerSample\lib\tyrus-standalone-client-1.13.jar</classPath>
+			<classPath>C:\Users\STC-intern-4\projects\ApparelStrategy\sota\SotaWebsocketTalker\lib\core-3.2.1.jar</classPath>
+		</jarReference>
+		<jarReference>
+			<classPath>C:\Users\STC-intern-4\projects\ApparelStrategy\sota\SotaWebsocketTalker\lib\tyrus-standalone-client-1.13.jar</classPath>
 		</jarReference>
 	</jarPath>
 	<package>
