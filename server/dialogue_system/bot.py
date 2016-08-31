@@ -24,6 +24,7 @@ class Bot(object):
         self.data_manager = DataBaseManager(data_dir)
         self.current_personal = None
         self.current_cloth_list = []
+        self.__print_current_variables()
 
 
     def __trigger(self, change, variables):
@@ -46,17 +47,20 @@ class Bot(object):
         if change.variable == 'scan_point':
             self.current_personal = self.data_manager.get_personal_from_id(change.value)
             self.rule_manager.variables['current_user'] = self.current_personal.user_pronoun
+            self.rule_manager.variables['qr_data']= 'null'
 
-        if change.variable == 'add_cloth':
+        if change.variable == 'scan_cloth':
             cloth = self.data_manager.get_clothes_from_code(change.value)
             self.current_cloth_list.append(cloth)
             self.rule_manager.variables['current_cloth'] = cloth.price
+            self.rule_manager.variables['qr_data'] = 'null'
 
         if change.variable == 'end_cloth':
             first = self.current_cloth_list[0]
             ev = self.data_manager.get_evaluate_from_code(first.cloth_code)[0]
             self.rule_manager.variables['current_osyare'] = ev.osyaredo
             print('osyaredo = {0}'.format(ev.osyaredo))
+            self.rule_manager.variables['qr_data'] = 'null'
 
         return variables
 
@@ -88,6 +92,11 @@ class Bot(object):
             system_action_list = self.rule_manager.input_utterance(data, self.__trigger)
             return_speech.extend(self.__get_speech_list(system_action_list))
 
+        if type == 'scan':
+            print('scan {0}'.format(data))
+            system_action_list = self.rule_manager.input_variable('qr_data', data, self.__trigger)
+            return_speech.extend(self.__get_speech_list(system_action_list))
+
         if type == 'picture':
             image_path = os.path.join(os.path.dirname(__file__), '../picture.jpg')
             file = base64.b64decode(data)
@@ -97,7 +106,7 @@ class Bot(object):
 
             if qr == '':
                 qr = 'null'
-            print('qr is ' + qr)
+
             # qrコードを読み取ると{qr_data}という変数に読み取り結果を入れる。nullなら読み取り失敗
             system_action_list =self.rule_manager.input_variable('qr_data',qr, self.__trigger)
             return_speech.extend(self.__get_speech_list(system_action_list))
@@ -105,4 +114,15 @@ class Bot(object):
         for r in return_speech:
             print('')
             print('return speech is {0}'.format(r))
+
+        self.__print_current_variables()
+
         return return_speech
+
+    def __print_current_variables(self):
+        result = 'variables [ '
+        for k in self.rule_manager.variables.keys():
+            v = self.rule_manager.variables[k]
+            result = result + '{ '+k+' : '+v+' },'
+        result = result + ' ]'
+        print(result)

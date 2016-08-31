@@ -23,7 +23,6 @@ class MessageServer(tornado.websocket.WebSocketHandler):
     def open(self):
         print('on open')
         self.bots[self] = Bot()
-        self.write_message('何かしゃべってください')
 
     def on_message(self, message):
         print('on message')
