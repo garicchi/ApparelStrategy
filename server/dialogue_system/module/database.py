@@ -20,6 +20,7 @@ class Cloth:
     image_url = ''
     big_type = ''
     cloth_code = ''
+    cloth_describe = ''
 
 class Evaluate:
     clothes = []
@@ -59,6 +60,7 @@ class DataBaseManager:
         cloth.image_url = cols[4]
         cloth.big_type = cols[5]
         cloth.cloth_code = cols[6]
+        cloth.cloth_describe = cols[7]
         return cloth
 
     def __struct_evaluate(self,line):
@@ -137,6 +139,25 @@ class DataBaseManager:
             return result
         else:
             return None
+
+    def get_clothes_from_keys(self, season,price = None):
+        """
+        read cloth data from keyword that contains cloth name
+        :param contains_name: key contains cloth name
+        :return: cloth object list
+        """
+        result = []
+        with codecs.open(self.clothes_path, 'r', 'utf-8') as f:
+            for line in f:
+                cloth = self.__struct_cloth(line)
+                if cloth.cloth_describe.count(season) > 0 or cloth.cloth_name.count(season) > 0:
+                    result.append(cloth)
+
+        if len(result) > 0:
+            return result
+        else:
+            return None
+
 
 
 

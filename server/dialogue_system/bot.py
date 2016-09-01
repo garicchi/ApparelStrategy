@@ -8,6 +8,10 @@ import json
 import base64
 from dialogue_system.module.barcode import *
 from dialogue_system.module.database import DataBaseManager
+from dialogue_system.module.posttwitter import PostTwitter
+import datetime
+from dialogue_system.module.pixelpy import Pixel
+import random
 
 class Bot(object):
 
@@ -30,6 +34,16 @@ class Bot(object):
         # a level of osyare on current user
         self.current_osyare = None
 
+        self.saturation = None
+
+        self.recommend_cloth = None
+
+        script_dir = os.path.dirname(__file__)
+        key_path = os.path.join(script_dir, '../key.json')
+        with open(key_path) as f:
+            self.keys = json.load(f)
+
+        self.twitter = PostTwitter(self.keys['consumer-key'],self.keys['consumer-secret'],self.keys['access-token'],self.keys['access-secret'])
 
         self.__print_current_variables()
 
@@ -66,6 +80,10 @@ class Bot(object):
             self.rule_manager.variables['current_cloth'] = cloth.price
             self.rule_manager.variables['qr_data'] = 'null'
 
+            # test
+            status = '【スキャンした服】 '+cloth.cloth_name + '  '+str(datetime.datetime.today())
+            self.twitter.post_image_url(status,cloth.image_url)
+
         if change.variable == 'end_cloth':
             if len(self.current_cloth_list) == 0:
                 return variables
@@ -79,7 +97,7 @@ class Bot(object):
                 self.current_osyare = ev[0]
 
                 # オシャレ度が50以上なら{is_osyare}をtrueにする
-                if ev[0].osyaredo > 50:
+                if int(ev[0].osyaredo) > 50:
                     self.rule_manager.variables['is_osyare'] = 'true'
             else:
                 print('no match in osyaredo for '+first.cloth_code)
@@ -90,6 +108,22 @@ class Bot(object):
 
             self.rule_manager.variables['qr_data'] = 'null'
 
+        if change.variable == 'search_db':
+            season = self.rule_manager.variables['season']
+            price = self.rule_manager.variables['price']
+            data_list = self.data_manager.get_clothes_from_keys(season,price)
+
+            if data_list is not None:
+                choice = random.choice(data_list)
+                self.recommend_cloth = choice
+
+                status = '【おすすめの服】 '+choice.cloth_name+ '  '+str(datetime.datetime.today())
+                self.twitter.post_image_url(status,choice.image_url)
+
+                self.rule_manager.variables['recommend'] = choice.cloth_name
+            else:
+                self.rule_manager.variables['recommend'] = 'null'
+
 
 
         return variables
@@ -99,6 +133,8 @@ class Bot(object):
         for system_action in utterance_list:
             if system_action == 'picture':
                 return_speech.append('picture,picture')
+            elif system_action == 'color':
+                return_speech.append('picture2,picture2')
             elif system_action == 'hide':
                 return_speech.append('hide,hide')
             elif system_action == 'normal':
@@ -136,14 +172,9 @@ class Bot(object):
             file = base64.b64decode(data)
             with open(image_path, 'wb') as f:
                 f.write(file)
-            qr = read_qr(image_path)
+            pixel = Pixel(image_path)
+            self.saturation = pixel.get_saturation()
 
-            if qr == '':
-                qr = 'null'
-
-            # qrコードを読み取ると{qr_data}という変数に読み取り結果を入れる。nullなら読み取り失敗
-            system_action_list =self.rule_manager.input_variable('qr_data',qr, self.__trigger)
-            return_speech.extend(self.__get_speech_list(system_action_list))
 
         print('')
         for r in return_speech:
