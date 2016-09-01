@@ -47,7 +47,7 @@ public class TalkChecker
 																														//@<EndOfBlock/>
 			if (speechRecogResult.contains("向いて")																		//@<BlockInfo>jp.vstone.block.freeproc,336,192,336,192,False,15,@</BlockInfo>
 			||speechRecogResult.contains("うしろ")
-			speechRecogResult.contains("後ろ")){
+			||speechRecogResult.contains("後ろ")){
 																														//@<EndOfBlock/>
 			pose = new CRobotPose();																					//@<BlockInfo>jp.vstone.block.pose,400,192,400,192,False,10,コメント@</BlockInfo>
 			pose.SetPose(	new Byte[]{1,2,3,4,5,6,7,8},
