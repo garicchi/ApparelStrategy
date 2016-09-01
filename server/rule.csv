@@ -1,6 +1,6 @@
 rule,action
 //initialize
-{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&{money}=[0]&{season}=[0]&{qr_data}=[null]&{s_u}=[]
+{init}=[],{init}=[ok]&{j_st}=[0]&{status}=[wait]&{money}=[0]&{season}=[0]&{qr_data}=[null]&{s_u}=[]&{season}=[]&{price}=[]
 //start
 {j_st}=![1|2]&{u_u}=[.*試着.*]&{status}=[wait],{s_u}=[ポイントカードを見せてね]&{status}=[point_scan]&{s_u}=[picture]
 {j_st}=![1|2]&{qr_data}![null]&{status}=[point_scan],{scan_point}=[{qr_data}]&{s_u}=[{current_user}さん、こんにちは。次に服を見せてね]&{status}=[cloth_scan]&{s_u}=[picture]
