@@ -367,6 +367,9 @@
 		<jarReference>
 			<classPath>C:\Users\STC-intern-4\projects\ApparelStrategy\sota\SotaWebsocketTalker\lib\tyrus-standalone-client-1.13.jar</classPath>
 		</jarReference>
+		<jarReference>
+			<classPath>C:\Users\STC-intern-4\projects\ApparelStrategy\sota\SotaWebsocketTalker\lib\ImageProcessor.jar</classPath>
+		</jarReference>
 	</jarPath>
 	<package>
 		<javaPackage>
@@ -3549,7 +3552,7 @@
 				</uintID>
 			</MotSend>
 			<debugPort>8765</debugPort>
-			<host>192.168.128.103</host>
+			<host>192.168.128.102</host>
 			<password>raspberry</password>
 			<platform>RaspberryPi</platform>
 			<rootPath>/home/pi/</rootPath>
