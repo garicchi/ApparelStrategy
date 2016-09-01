@@ -133,12 +133,8 @@ class Bot(object):
         for system_action in utterance_list:
             if system_action == 'picture':
                 return_speech.append('picture,picture')
-            elif system_action == 'color':
-                return_speech.append('picture2,picture2')
-            elif system_action == 'hide':
-                return_speech.append('hide,hide')
-            elif system_action == 'normal':
-                return_speech.append('normal,normal')
+            elif system_action == 'capture':
+                return_speech.append('capture,capture')
             else:
                 return_speech.append('speech,' + system_action)
         return return_speech
@@ -174,7 +170,11 @@ class Bot(object):
                 f.write(file)
             pixel = Pixel(image_path)
             self.saturation = pixel.get_saturation()
-
+            print("saido = {0}".format(self.saturation))
+            if self.saturation > 20 and self.saturation < 70:
+                self.rule_manager.variables['is_osyare'] = 'true'
+            else:
+                self.rule_manager.variables['is_osyare'] = 'false'
 
         print('')
         for r in return_speech:
