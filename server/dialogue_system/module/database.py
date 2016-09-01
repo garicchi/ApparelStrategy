@@ -140,7 +140,7 @@ class DataBaseManager:
         else:
             return None
 
-    def get_clothes_from_keys(self, key1,key2):
+    def get_clothes_from_keys(self, season,price = None):
         """
         read cloth data from keyword that contains cloth name
         :param contains_name: key contains cloth name
@@ -150,7 +150,7 @@ class DataBaseManager:
         with codecs.open(self.clothes_path, 'r', 'utf-8') as f:
             for line in f:
                 cloth = self.__struct_cloth(line)
-                if cloth.cloth_describe.count(key1) > 0 and cloth.cloth_describe.count(key2) > 0:
+                if cloth.cloth_describe.count(season) > 0 or cloth.cloth_name.count(season) > 0:
                     result.append(cloth)
 
         if len(result) > 0:

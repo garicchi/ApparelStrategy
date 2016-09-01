@@ -109,9 +109,9 @@ class Bot(object):
             self.rule_manager.variables['qr_data'] = 'null'
 
         if change.variable == 'search_db':
-            key1 = self.rule_manager.variables['key1']
-            key2 = self.rule_manager.variables['key2']
-            data_list = self.data_manager.get_clothes_from_keys(key1,key2)
+            season = self.rule_manager.variables['season']
+            price = self.rule_manager.variables['price']
+            data_list = self.data_manager.get_clothes_from_keys(season,price)
 
             if data_list is not None:
                 choice = random.choice(data_list)
