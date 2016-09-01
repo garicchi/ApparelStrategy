@@ -13,7 +13,10 @@ import datetime
 from dialogue_system.module.pixelpy import Pixel
 import random
 
+
 class Bot(object):
+    isDebug = False
+    isDemo = True
 
     def __init__(self):
         """
@@ -57,8 +60,7 @@ class Bot(object):
         :param variables:変数辞書
         :return:新しい変数辞書
         """
-        #debug mode
-        print('trigger  row: {0}  {1} = [{2}]'.format(change.row_num, change.variable, change.value))
+        self.__print_debug('trigger  row: {0}  {1} = [{2}]'.format(change.row_num, change.variable, change.value))
 
         """変数を変更する場合はこう
         if change.variable == 'u_a' and change.value == 'hello':
@@ -73,12 +75,16 @@ class Bot(object):
             self.current_personal = self.data_manager.get_personal_from_id(alter_value)
             self.rule_manager.variables['current_user'] = self.current_personal.user_pronoun
             self.rule_manager.variables['qr_data']= 'null'
+            self.__print_demo('[scan point card] name:{0} address:{1}'.format(self.current_personal.user_name,self.current_personal.address))
 
         if change.variable == 'scan_cloth':
             cloth = self.data_manager.get_clothes_from_code(alter_value)
             self.current_cloth_list.append(cloth)
             self.rule_manager.variables['current_cloth'] = cloth.price
             self.rule_manager.variables['qr_data'] = 'null'
+
+            self.__print_demo('[scan cloth] name:{0} price:{1}yen'.format(cloth.cloth_name,
+                                                                              cloth.price))
 
             # test
             status = '【スキャンした服】 '+cloth.cloth_name + '  '+str(datetime.datetime.today())
@@ -93,18 +99,18 @@ class Bot(object):
             if ev is not None:
                 ev_choice = random.choice(ev)
                 self.rule_manager.variables['current_osyare'] = ev_choice.osyaredo
-                print('osyaredo = {0}'.format(ev_choice.osyaredo))
+                self.__print_debug('osyaredo = {0}'.format(ev_choice.osyaredo))
                 self.current_osyare = ev_choice
 
                 # オシャレ度が50以上なら{is_osyare}をtrueにする
                 if int(ev_choice.osyaredo) > 50:
                     self.rule_manager.variables['is_osyare'] = 'true'
             else:
-                print('no match in osyaredo')
+                self.__print_debug('no match in osyaredo')
                 self.current_osyare = None
 
             for c in self.current_cloth_list:
-                print(c.cloth_name)
+                self.__print_debug(c.cloth_name)
 
             self.rule_manager.variables['qr_data'] = 'null'
 
@@ -159,7 +165,7 @@ class Bot(object):
             return_speech.extend(self.__get_speech_list(system_action_list))
 
         if type == 'scan':
-            print('scan {0}'.format(data))
+            self.__print_debug('scan {0}'.format(data))
             system_action_list = self.rule_manager.input_variable('qr_data', data, self.__trigger)
             return_speech.extend(self.__get_speech_list(system_action_list))
 
@@ -170,15 +176,14 @@ class Bot(object):
                 f.write(file)
             pixel = Pixel(image_path)
             self.saturation = pixel.get_saturation()
-            print("saido = {0}".format(self.saturation))
+            self.__print_debug("saido = {0}".format(self.saturation))
             if self.current_osyare is None and self.saturation > 20 and self.saturation < 70:
                 self.rule_manager.variables['is_osyare'] = 'true'
             else:
                 self.rule_manager.variables['is_osyare'] = 'false'
 
-        print('')
         for r in return_speech:
-            print('return speech is {0}'.format(r))
+            self.__print_debug('return speech is {0}'.format(r))
 
         self.__print_current_variables()
 
@@ -190,4 +195,12 @@ class Bot(object):
             v = self.rule_manager.variables[k]
             result = result + '{ '+k+' : '+v+' },'
         result = result + ' ]'
-        print(result)
+        self.__print_debug(result)
+
+    def __print_debug(self,str):
+        if self.isDebug:
+            print(str)
+
+    def __print_demo(self,str):
+        if self.isDemo:
+            print(str)

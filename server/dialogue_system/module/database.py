@@ -128,17 +128,19 @@ class DataBaseManager:
         :param cloth_code: cloth code for searching evaluate
         :return: evaluate object list
         """
-        for i in range(3):
-            if i >= len(cloth_codelist):
-                cloth_codelist.append('null')
 
         result = []
         with codecs.open(self.evaluate_path, 'r', 'utf-8') as f:
             for line in f:
                 ev = self.__struct_evaluate(line)
-
-                if cloth_codelist[0] in ev.clothes and cloth_codelist[1] in ev.clothes and cloth_codelist[3] in ev.clothes:
+                isContain = True
+                for cloth in cloth_codelist:
+                    if not cloth.cloth_code in ev.clothes:
+                        isContain = False
+                        break
+                if isContain:
                     result.append(ev)
+
         if len(result) > 0:
             return result
         else:
