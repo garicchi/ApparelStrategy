@@ -12,6 +12,7 @@ from dialogue_system.module.posttwitter import PostTwitter
 import datetime
 from dialogue_system.module.pixelpy import Pixel
 import random
+import dialogue_system.module.watson_nlc_handson as watson
 
 
 class Bot(object):
@@ -60,6 +61,7 @@ class Bot(object):
         :param variables:変数辞書
         :return:新しい変数辞書
         """
+
         self.__print_debug('trigger  row: {0}  {1} = [{2}]'.format(change.row_num, change.variable, change.value))
 
         """変数を変更する場合はこう
@@ -130,6 +132,12 @@ class Bot(object):
             else:
                 self.rule_manager.variables['recommend'] = 'null'
 
+        if change.variable == 'watson' and change.value_alternate == 'watson':
+            u_u = self.rule_manager.variables["u_u"]
+            season = watson.season_classification(u_u)
+            self.rule_manager.variables["watson"] = "null"
+            self.rule_manager.input_variable('season',season,self.__trigger)
+            
         return variables
 
     def __get_speech_list(self,utterance_list):
