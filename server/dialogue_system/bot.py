@@ -124,15 +124,6 @@ class Bot(object):
             else:
                 self.rule_manager.variables['recommend'] = 'null'
 
-        if change.variable == 'decision_season' and change.value == 'spring':
-            valiable['season_u']='春'
-        elif change.variable == 'decision_season' and change.value == 'summer':
-            valiable['season_u']='夏'
-        elif change.variable == 'decision_season' and change.value == 'autumn':
-            valiable['season_u']='秋'
-        elif change.variable == 'decision_season' and change.value == 'winter':
-            valiable['season_u']='冬'
-
         return variables
 
     def __get_speech_list(self,utterance_list):
