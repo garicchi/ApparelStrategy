@@ -88,19 +88,19 @@ class Bot(object):
             if len(self.current_cloth_list) == 0:
                 return variables
 
-            first = self.current_cloth_list[0]
-            ev = self.data_manager.get_evaluate_from_code(first.cloth_code)
+            ev = self.data_manager.get_evaluate_from_codelist(self.current_cloth_list)
             self.rule_manager.variables['is_osyare'] = 'false'
             if ev is not None:
-                self.rule_manager.variables['current_osyare'] = ev[0].osyaredo
-                print('osyaredo = {0}'.format(ev[0].osyaredo))
-                self.current_osyare = ev[0]
+                ev_choice = random.choice(ev)
+                self.rule_manager.variables['current_osyare'] = ev_choice.osyaredo
+                print('osyaredo = {0}'.format(ev_choice.osyaredo))
+                self.current_osyare = ev_choice
 
                 # オシャレ度が50以上なら{is_osyare}をtrueにする
-                if int(ev[0].osyaredo) > 50:
+                if int(ev_choice.osyaredo) > 50:
                     self.rule_manager.variables['is_osyare'] = 'true'
             else:
-                print('no match in osyaredo for '+first.cloth_code)
+                print('no match in osyaredo')
                 self.current_osyare = None
 
             for c in self.current_cloth_list:
@@ -171,7 +171,7 @@ class Bot(object):
             pixel = Pixel(image_path)
             self.saturation = pixel.get_saturation()
             print("saido = {0}".format(self.saturation))
-            if self.saturation > 20 and self.saturation < 70:
+            if self.current_osyare is None and self.saturation > 20 and self.saturation < 70:
                 self.rule_manager.variables['is_osyare'] = 'true'
             else:
                 self.rule_manager.variables['is_osyare'] = 'false'
