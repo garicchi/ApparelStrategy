@@ -1,5 +1,4 @@
-# HotPepperGourmetDialogue
-Restaurant Search System through Dialogue in Japanese.
+# アパレル解放大作戦
 
 
 ## Installation
