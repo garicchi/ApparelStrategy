@@ -21,12 +21,11 @@ class MessageServer(tornado.websocket.WebSocketHandler):
         return True
 
     def open(self):
-        print('on open')
+        print('---  on open session ---')
         self.bots[self] = Bot()
 
     def on_message(self, message):
-        print('on message')
-        print(message)
+        #print('--- on message ---')
         jobj = json.loads(message)
         if jobj['data'] == "":
             print('receive empty data')
@@ -38,7 +37,7 @@ class MessageServer(tornado.websocket.WebSocketHandler):
             self.write_message(rep)
 
     def on_close(self):
-        print('on close')
+        print('--- on close session ---')
         del self.bots[self]
 
 application = tornado.web.Application([

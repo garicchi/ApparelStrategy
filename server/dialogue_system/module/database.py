@@ -122,6 +122,30 @@ class DataBaseManager:
         else:
             return None
 
+    def get_evaluate_from_codelist(self, cloth_codelist):
+        """
+        read evaluate(osyaredo) from cloth code
+        :param cloth_code: cloth code for searching evaluate
+        :return: evaluate object list
+        """
+
+        result = []
+        with codecs.open(self.evaluate_path, 'r', 'utf-8') as f:
+            for line in f:
+                ev = self.__struct_evaluate(line)
+                isContain = True
+                for cloth in cloth_codelist:
+                    if not cloth.cloth_code in ev.clothes:
+                        isContain = False
+                        break
+                if isContain:
+                    result.append(ev)
+
+        if len(result) > 0:
+            return result
+        else:
+            return None
+
     def get_clothes_from_name(self, contains_name):
         """
         read cloth data from keyword that contains cloth name
