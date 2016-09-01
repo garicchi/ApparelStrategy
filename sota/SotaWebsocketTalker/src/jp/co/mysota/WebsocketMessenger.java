@@ -127,13 +127,15 @@ public class WebsocketMessenger
 
 		isScanComplete = false;
 																														//@<EndOfBlock/>
-		CRobotUtil.wait((int)1000);																						//@<BlockInfo>jp.vstone.block.wait,448,288,448,288,False,21,コメント@</BlockInfo>	@<EndOfBlock/>
-		while(isScanComplete==false)																					//@<BlockInfo>jp.vstone.block.while,528,288,800,288,False,20,TRUE@</BlockInfo>
+		CRobotUtil.wait((int)3000);																						//@<BlockInfo>jp.vstone.block.wait,448,288,448,288,False,38,コメント@</BlockInfo>	@<EndOfBlock/>
+		while(isScanComplete==false)																					//@<BlockInfo>jp.vstone.block.while,528,288,816,288,False,21,TRUE@</BlockInfo>
 		{
 
 
 																														//@<OutputChild>
-			{																											//@<BlockInfo>jp.vstone.block.facedetect.stillpicture,592,288,592,288,False,7,still@</BlockInfo>
+			GlobalVariable.sotawish.Say((String)"読み取ってるよ。少し待ってね",MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);	//@<BlockInfo>jp.vstone.block.talk.say,592,288,592,288,False,7,@</BlockInfo>
+																														//@<EndOfBlock/>
+			{																											//@<BlockInfo>jp.vstone.block.facedetect.stillpicture,656,288,656,288,False,6,still@</BlockInfo>
 				String filepath = "/var/sota/photo/";
 				filepath += (String)"picture";
 				boolean isTrakcing=GlobalVariable.robocam.isAliveFaceDetectTask();
@@ -144,8 +146,6 @@ public class WebsocketMessenger
 				CRobotUtil.Log("stillpicture","save picthre file to \"" + filepath +"\"");
 				if(isTrakcing) GlobalVariable.robocam.StartFaceTraking();
 			}																											//@<EndOfBlock/>
-			GlobalVariable.sotawish.Say((String)"読み取ってるよ。少し待ってね",MotionAsSotaWish.MOTION_TYPE_TALK,(int)11,(int)13,(int)11);	//@<BlockInfo>jp.vstone.block.talk.say,672,288,672,288,False,6,@</BlockInfo>
-																														//@<EndOfBlock/>
 			try{																										//@<BlockInfo>jp.vstone.block.freeproc,736,288,736,288,False,5,@</BlockInfo>
 			String filePath="/var/sota/photo/picture.jpg";
 			String processPath = filePath+"_process.jpg";
@@ -170,10 +170,10 @@ public class WebsocketMessenger
 																														//@</OutputChild>
 		}
 																														//@<EndOfBlock/>
-		try{																											//@<BlockInfo>jp.vstone.block.freeproc,912,288,912,288,False,19,@</BlockInfo>
+		try{																											//@<BlockInfo>jp.vstone.block.freeproc,912,288,912,288,False,20,@</BlockInfo>
 																														//@<EndOfBlock/>
-		sendData((String)"scan",(String)scanData);																		//@<BlockInfo>jp.vstone.block.callfunc.base,992,288,992,288,False,18,@</BlockInfo>	@<EndOfBlock/>
-		}catch(Exception e){																							//@<BlockInfo>jp.vstone.block.freeproc,528,416,528,416,False,38,@</BlockInfo>
+		sendData((String)"scan",(String)scanData);																		//@<BlockInfo>jp.vstone.block.callfunc.base,992,288,992,288,False,19,@</BlockInfo>	@<EndOfBlock/>
+		}catch(Exception e){																							//@<BlockInfo>jp.vstone.block.freeproc,528,416,528,416,False,18,@</BlockInfo>
 		e.printStackTrace();
 		}
 
