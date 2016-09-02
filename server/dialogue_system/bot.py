@@ -15,7 +15,7 @@ import random
 
 
 class Bot(object):
-    isDebug = False
+    isDebug = True
     isDemo = True
 
     def __init__(self):
@@ -115,9 +115,11 @@ class Bot(object):
             self.rule_manager.variables['qr_data'] = 'null'
 
         if change.variable == 'search_db':
+
             season = self.rule_manager.variables['season']
             price = self.rule_manager.variables['price']
             data_list = self.data_manager.get_clothes_from_keys(season,price)
+
 
             if data_list is not None:
                 choice = random.choice(data_list)
@@ -129,6 +131,8 @@ class Bot(object):
                 self.rule_manager.variables['recommend'] = choice.cloth_name
             else:
                 self.rule_manager.variables['recommend'] = 'null'
+
+
 
         return variables
 
