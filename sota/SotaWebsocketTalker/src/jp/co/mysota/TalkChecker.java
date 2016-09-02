@@ -31,21 +31,21 @@ public class TalkChecker
 	}																													//@<EndOfBlock/>
 
 	//@<Separate/>
-	public void talkCheck()																								//@<BlockInfo>jp.vstone.block.func,0,192,960,304,False,14,@</BlockInfo>
+	public void talkCheck()																								//@<BlockInfo>jp.vstone.block.func,0,192,960,304,False,15,@</BlockInfo>
 	throws SpeechRecogAbortException {
 		if(!GlobalVariable.TRUE) throw new SpeechRecogAbortException("default");
 
 																														//@<OutputChild>
-		WebsocketMessenger.connect((String)"ws://192.168.128.100:8080/ws");												//@<BlockInfo>jp.vstone.block.callfunc.base,112,192,112,192,False,13,@</BlockInfo>	@<EndOfBlock/>
-		while(GlobalVariable.TRUE)																						//@<BlockInfo>jp.vstone.block.while.endless,192,192,752,192,False,12,Endless@</BlockInfo>
+		WebsocketMessenger.connect((String)"ws://54.238.171.167:8080/ws");												//@<BlockInfo>jp.vstone.block.callfunc.base,112,192,112,192,False,14,@</BlockInfo>	@<EndOfBlock/>
+		while(GlobalVariable.TRUE)																						//@<BlockInfo>jp.vstone.block.while.endless,192,192,752,192,False,13,Endless@</BlockInfo>
 		{
 
 																														//@<OutputChild>
-			speechRecogResult = GlobalVariable.recog.getResponsewithAbort((int)10000,(int)3);							//@<BlockInfo>jp.vstone.block.talk.speechrecog.get,272,192,272,192,False,11,音声認識して、得られた結果（文字列）をspeechRecogResultに代入します。@</BlockInfo>
+			speechRecogResult = GlobalVariable.recog.getResponsewithAbort((int)10000,(int)3);							//@<BlockInfo>jp.vstone.block.talk.speechrecog.get,272,192,272,192,False,12,音声認識して、得られた結果（文字列）をspeechRecogResultに代入します。@</BlockInfo>
 			if(speechRecogResult == null) speechRecogResult = "";
 
 																														//@<EndOfBlock/>
-			if (speechRecogResult.contains("向いて")																		//@<BlockInfo>jp.vstone.block.freeproc,336,192,336,192,False,15,@</BlockInfo>
+			if (speechRecogResult.contains("向いて")																		//@<BlockInfo>jp.vstone.block.freeproc,336,192,336,192,False,11,@</BlockInfo>
 			||speechRecogResult.contains("うしろ")
 			||speechRecogResult.contains("後ろ")){
 																														//@<EndOfBlock/>
